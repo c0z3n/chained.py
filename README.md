@@ -1,4 +1,4 @@
 chains.py
 =========
 
-a collection of simple python markov chain implementations
+a simple python markov chain implementation
