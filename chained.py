@@ -49,6 +49,8 @@ class Chain(defaultdict):
 
     def getNextNode(self):
         self.runningState = self.getNode(self.runningState)
+        if self.runningState[-1] == END:
+            self.runningState = self.getNode(self.startState)
         return self.runningState[-1]
 
     def getSequence(self):
