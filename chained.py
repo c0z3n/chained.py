@@ -7,7 +7,7 @@ END   = ">"
 NA    = "^"
 
 class Chain(defaultdict):
-    def __init__(self, order):
+    def __init__(self, order=1):
         self.order = order
         super(Chain, self).__init__(lambda: defaultdict(int))
 
