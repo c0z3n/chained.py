@@ -9,6 +9,7 @@ NA    = "^"
 class Chain(defaultdict):
     def __init__(self, order=1):
         self.order = order
+        self.runningState = tuple((NA*(order-1)) + START)
         super(Chain, self).__init__(lambda: defaultdict(int))
 
     def choice(self, source):
@@ -42,6 +43,10 @@ class Chain(defaultdict):
         Chain(), [0] being furthest in the past and [-1] being the state immediately previous
         """
         return tuple(list(state[1:]) + [self.choice(self[tuple(state)])])
+
+    def getNextNode(self):
+        self.runningState = self.getNode(self.runningState)
+        return self.runningState[-1]
 
     def getSequence(self):
         """return a sequence chosen from the Chain()
