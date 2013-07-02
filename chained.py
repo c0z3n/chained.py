@@ -61,7 +61,7 @@ class Chain(defaultdict):
         """
         state = self.getNode(list(self.startState))
         sequence = list()
-        while state[-1] != END:
+        while (state[-1] != END) and self[state] and len(self[state]) > 0:
             sequence.append(state[-1])
             state = tuple(list(state[1:]) + [self.choice(self[state])])
         return sequence
