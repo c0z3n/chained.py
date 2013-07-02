@@ -11,7 +11,8 @@ class Chain(defaultdict):
         self.order = order
         self.startState = tuple((NA*(order-1)) + START)
         self.endState = tuple(END + NA*(order-1))
-        self.runningState = self.startState
+        self.runningGetState = self.startState
+        self.runningAddState = self.startState
         super(Chain, self).__init__(lambda: defaultdict(int))
 
 
@@ -29,6 +30,10 @@ class Chain(defaultdict):
         next -- the value that follows the series of states described in prev.
         """
         self[tuple(prev)][next] += 1
+
+    def addNextNode(self, value):
+        self.addNode(self.runningAddState, value)
+        self.runningAddState = tuple(list(self.runningAddState[1:]) + [value])
 
     def addSequence(self, sequence):
         """scans through a sequence and adds it all to the Chain(). also store the start and end of the sequence with 
@@ -48,10 +53,10 @@ class Chain(defaultdict):
         return tuple(list(state[1:]) + [self.choice(self[tuple(state)])])
 
     def getNextNode(self):
-        self.runningState = self.getNode(self.runningState)
-        if self.runningState[-1] == END:
-            self.runningState = self.getNode(self.startState)
-        return self.runningState[-1]
+        self.runningGetState = self.getNode(self.runningGetState)
+        if (self.runningGetState[-1] == END) or not self[self.runningGetState] or len(self[self.runningGetState])<1:
+            self.runningGetState = self.getNode(self.startState)
+        return self.runningGetState[-1]
 
     def getSequence(self):
         """return a sequence chosen from the Chain()
