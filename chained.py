@@ -9,8 +9,11 @@ NA    = "^"
 class Chain(defaultdict):
     def __init__(self, order=1):
         self.order = order
-        self.runningState = tuple((NA*(order-1)) + START)
+        self.startState = tuple((NA*(order-1)) + START)
+        self.endState = tuple(END + NA*(order-1))
+        self.runningState = self.startState
         super(Chain, self).__init__(lambda: defaultdict(int))
+
 
     def choice(self, source):
         """choose a key from a dictionary based on the value associated therewith.
@@ -33,7 +36,7 @@ class Chain(defaultdict):
         sequence -- a list or tuple of any length longer than self.order, from which to draw state information for the Chain()
             sequence may also be a string, if you wish to index character information
         """
-        sequence = list(NA*self.order+START) + list(sequence) + list(END+NA*self.order)
+        sequence = list(self.startState) + list(sequence) + list(self.endState)
         for idx in xrange(self.order, len(sequence)):
             self.addNode(sequence[idx-self.order:idx], sequence[idx])
 
@@ -54,7 +57,7 @@ class Chain(defaultdict):
         about and the start of a sequence, respectively. as the sequence is generated we keep a running window of the last 
         (self.order) nodes we chose and use that to generate next states until we encounter a END symbol
         """
-        state = self.getNode(list(NA*(self.order-1)+START))
+        state = self.getNode(list(self.startState))
         sequence = list()
         while state[-1] != END:
             sequence.append(state[-1])
