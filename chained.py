@@ -58,13 +58,11 @@ class Chain(defaultdict):
         return tuple(list(state[1:]) + [self.choice(self[tuple(state)])])
 
     def getNextNode(self):
-
         """get the "next" node, which is the node that follows the last node that was fetched using addNextNode(). The Chain()
         keeps track of the previous n nodes fetched (where n is the order of the chain) in self.runningGetState. If 
         getNextNode() has never been called before on a given instance of a Chain(), it is assumed that the node to get should
         be the first in a sequence.
         """
-
         self.runningGetState = self.getNode(self.runningGetState)
         if (self.runningGetState[-1] == END) or not self[self.runningGetState] or len(self[self.runningGetState])<1:
             self.runningGetState = self.getNode(self.startState)
