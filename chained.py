@@ -25,7 +25,7 @@ class Chain(defaultdict):
 
     def addNode(self, prev, next):
         """add a node (instance) of a state to the Chain()
-        prev -- a list or tuple of a length determined by self.order in which each item descrives a previous state of the 
+        prev -- a list or tuple of a length determined by self.order in which each item describes a previous state of the 
         Chain(), [0] being furthest in the past and [-1] being the state immediately previous
         next -- the value that follows the series of states described in prev.
         """
@@ -52,7 +52,7 @@ class Chain(defaultdict):
 
     def getNode(self, state):
         """return the next node (state) for a given input state
-        state -- a list or tuple of a length determined by self.order in which each item descrives a previous state of the
+        state -- a list or tuple of a length determined by self.order in which each item describes a previous state of the
         Chain(), [0] being furthest in the past and [-1] being the state immediately previous
         """
         return tuple(list(state[1:]) + [self.choice(self[tuple(state)])])
